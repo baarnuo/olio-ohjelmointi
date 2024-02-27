@@ -51,7 +51,6 @@ void MainWindow::updateProgressBar()
         if (percentage == 0) {
             pQTimer->stop();
             setGameInfoText("Player 2 WON!!", 25);
-            gameTime = 0;
         }
     } else {
         percentage = (((double) player2Time / gameTime) * 100.0);
@@ -61,7 +60,6 @@ void MainWindow::updateProgressBar()
         if (percentage == 0) {
             pQTimer->stop();
             setGameInfoText("Player 1 WON!!", 25);
-            gameTime = 0;
         }
     }
 }
@@ -101,15 +99,15 @@ void MainWindow::timeButtonClickHandler()
             gameTime = time2Min;
             player1Time = time2Min;
             player2Time = time2Min;
-            ui->progressBar1->setValue(100);
-            ui->progressBar2->setValue(100);
+            qDebug() << "Game time" << time2Min << "s";
         } else {
             gameTime = time5Min;
             player1Time = time5Min;
             player2Time = time5Min;
-            ui->progressBar1->setValue(100);
-            ui->progressBar2->setValue(100);
+            qDebug() << "Game time" << time5Min << "s";
         }
+        ui->progressBar1->setValue(100);
+        ui->progressBar2->setValue(100);
         setGameInfoText("Ready to play", 20);
     }
 }
@@ -119,7 +117,7 @@ void MainWindow::startStopButtonClickHandler()
     QPushButton* button = qobject_cast<QPushButton*>(sender());
     QString name = button->objectName();
 
-    if (name == "startButton" && !pQTimer->isActive() && gameTime != 0) {
+    if (name == "startButton" && !pQTimer->isActive() && ((player1Time == 120 || player1Time == 300) && (player2Time == 120 || player2Time == 300))) {
         currentPlayer = 1;
         timeout();
         setGameInfoText("Game ongoing", 20);
